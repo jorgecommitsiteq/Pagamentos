@@ -1,8 +1,40 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { Funcionario, Termo } from '../types';
 import { supabase } from '../lib/supabase';
 import { getDaysInMonth, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+
+const AttendanceRow = memo(({ funcionario, daysArray, gridDataFunc, termos, onCellChange }: any) => {
+  return (
+    <tr className="hover:bg-blue-50 group">
+      <td className="px-4 py-3 sticky left-0 z-10 bg-white group-hover:bg-blue-50 border-r border-gray-200">
+        <div className="font-semibold text-gray-900">{funcionario.nome}</div>
+        <div className="text-xs text-gray-500 overflow-hidden text-ellipsis">{funcionario.empresa} - {funcionario.setor}</div>
+      </td>
+      
+      {daysArray.map((day: number) => {
+        const currentTermoId = gridDataFunc?.[day.toString()] || '';
+        return (
+          <td key={day} className="px-1 py-1 border-r border-gray-200 p-0 text-center relative">
+            <select
+              value={currentTermoId}
+              onChange={(e) => onCellChange(funcionario.id, day, e.target.value)}
+              className={`w-full h-10 text-center font-bold appearance-none cursor-pointer border-transparent hover:border-blue-400 focus:border-blue-500 rounded focus:ring-0 ${
+                currentTermoId ? 'bg-blue-100 text-blue-900' : 'bg-transparent text-gray-400'
+              }`}
+              title={`Dia ${day} - ${funcionario.nome}`}
+            >
+              <option value="">-</option>
+              {termos.map((t: any) => (
+                <option key={t.id} value={t.id}>{t.sigla}</option>
+              ))}
+            </select>
+          </td>
+        );
+      })}
+    </tr>
+  );
+});
 
 export default function Attendance() {
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
@@ -68,7 +100,7 @@ export default function Attendance() {
     fetchData();
   }, [selectedDate, daysInMonth]);
 
-  const handleCellChange = async (funcId: string, day: number, termoId: string) => {
+  const handleCellChange = useCallback(async (funcId: string, day: number, termoId: string) => {
     console.log(`[Attendance Grid] Atualizando celula - Func: ${funcId}, Dia: ${day}, Termo: ${termoId}`);
     
     // Atualização otimista na tela
@@ -105,9 +137,9 @@ export default function Attendance() {
       }
     } catch (e) {
       console.error('Erro ao salvar frequência no banco:', e);
-      // Aqui idealmente reverteriamos o estado se falhasse, mas para manter a lógica simples não faremos agora.
+      // Aqui idealmente reverteriamos o estado se falhasse
     }
-  };
+  }, [selectedDate]);
 
   return (
     <div className="p-4 md:p-8 max-w-full mx-auto space-y-6 md:space-y-8">
@@ -170,34 +202,14 @@ export default function Attendance() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {funcionarios.map(f => (
-                <tr key={f.id} className="hover:bg-blue-50 group">
-                  <td className="px-4 py-3 sticky left-0 z-10 bg-white group-hover:bg-blue-50 border-r border-gray-200">
-                    <div className="font-semibold text-gray-900">{f.nome}</div>
-                    <div className="text-xs text-gray-500 overflow-hidden text-ellipsis">{f.empresa} - {f.setor}</div>
-                  </td>
-                  
-                  {daysArray.map(day => {
-                    const currentTermoId = gridData[f.id]?.[day.toString()] || '';
-                    
-                    return (
-                      <td key={day} className="px-1 py-1 border-r border-gray-200 p-0 text-center relative">
-                        <select
-                          value={currentTermoId}
-                          onChange={(e) => handleCellChange(f.id, day, e.target.value)}
-                          className={`w-full h-10 text-center font-bold appearance-none cursor-pointer border-transparent hover:border-blue-400 focus:border-blue-500 rounded focus:ring-0 ${
-                            currentTermoId ? 'bg-blue-100 text-blue-900' : 'bg-transparent text-gray-400'
-                          }`}
-                          title={`Dia ${day} - ${f.nome}`}
-                        >
-                          <option value="">-</option>
-                          {termos.map(t => (
-                            <option key={t.id} value={t.id}>{t.sigla}</option>
-                          ))}
-                        </select>
-                      </td>
-                    );
-                  })}
-                </tr>
+                <AttendanceRow 
+                  key={f.id} 
+                  funcionario={f} 
+                  daysArray={daysArray} 
+                  gridDataFunc={gridData[f.id]} 
+                  termos={termos} 
+                  onCellChange={handleCellChange} 
+                />
               ))}
             </tbody>
           </table>

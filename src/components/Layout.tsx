@@ -62,7 +62,7 @@ export default function Layout() {
       {/* Mobile Header */}
       <div className="md:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-blue-600">RH Benefits</h1>
+          <h1 className="text-xl font-bold tracking-tight text-blue-600">Iteq Pagamentos</h1>
           <p className="text-xs text-gray-500">Gestão de VR/VT</p>
         </div>
         <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-md">
@@ -73,10 +73,10 @@ export default function Layout() {
       {/* Sidebar */}
       <aside className={`${menuOpen ? 'flex absolute inset-0 top-[73px] z-50 shadow-xl' : 'hidden'} md:flex md:static w-full md:w-64 bg-white border-r border-gray-200 flex-col transition-all`}>
         <div className="hidden md:block p-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold tracking-tight text-blue-600">RH Benefits</h1>
+          <h1 className="text-xl font-bold tracking-tight text-blue-600">Iteq Pagamentos</h1>
           <p className="text-xs text-gray-500 mt-1">Gestão de VR/VT</p>
         </div>
-        
+
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => {
             const isActive = location.pathname.startsWith(item.path);
@@ -86,11 +86,10 @@ export default function Layout() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-700' 
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${isActive
+                    ? 'bg-blue-50 text-blue-700'
                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-400'}`} />
                 {item.name}

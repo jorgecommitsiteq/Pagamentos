@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Lock, User, AlertCircle } from 'lucide-react';
@@ -48,7 +48,7 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
             <Lock className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">RH Benefits</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Iteq Pagamentos</h1>
           <p className="text-sm text-gray-500 mt-2">Gestão de Benefícios e Frequência</p>
         </div>
 

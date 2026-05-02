@@ -110,13 +110,13 @@ export default function Attendance() {
   };
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between">
+    <div className="p-4 md:p-8 max-w-full mx-auto space-y-6 md:space-y-8">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Painel Operacional Diario</h2>
-          <p className="text-sm text-gray-500 mt-1">Apenas clique nas células para aplicar um termo nos dias ausentes/extras.</p>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-gray-900">Registro de Frequência</h2>
+          <p className="text-sm text-gray-500 mt-1">Selecione o mês/ano e preencha a grade utilizando os termos configurados.</p>
         </div>
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
+        <div className="flex flex-wrap items-center gap-3">
           <div>
             <label className="sr-only">Mês/Ano</label>
             <input 

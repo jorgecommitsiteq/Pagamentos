@@ -82,11 +82,11 @@ export default function Employees() {
   };
 
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="p-4 md:p-8 max-w-[1200px] mx-auto space-y-6 md:space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Colaboradores</h2>
-          <p className="text-sm text-gray-500 mt-1">Gerencie a equipe e valores padrão de benefícios.</p>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-gray-900">Funcionários</h2>
+          <p className="text-sm text-gray-500 mt-1">Gerencie a equipe e seus valores diários de benefícios.</p>
         </div>
         <button 
           onClick={() => setIsFormOpen(!isFormOpen)}

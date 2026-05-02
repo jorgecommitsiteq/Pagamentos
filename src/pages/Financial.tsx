@@ -455,19 +455,19 @@ export default function Financial() {
   };
 
   return (
-    <div className="p-8 max-w-[1400px] mx-auto space-y-8 relative">
+    <div className="p-4 md:p-8 max-w-[1400px] mx-auto space-y-6 md:space-y-8 relative">
       {loading && (
         <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-50">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row md:items-start justify-between">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Demonstrativo Financeiro</h2>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-gray-900">Demonstrativo Financeiro</h2>
           <p className="text-sm text-gray-500 mt-1">Comparativo entre valor padrão antecipado e valor devido para a quinzena.</p>
         </div>
-        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4 mt-4 md:mt-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div>
             <label className="sr-only">Mês/Ano</label>
             <input 
@@ -480,13 +480,13 @@ export default function Financial() {
           <div className="flex bg-gray-100 p-1 rounded-md border border-gray-200">
             <button
               onClick={() => setQuinzena(1)}
-              className={`px-3 py-1.5 text-sm font-medium rounded ${quinzena === 1 ? 'bg-white text-blue-700 shadow-sm transition' : 'text-gray-600 hover:text-gray-900 transition'}`}
+              className={`flex-1 sm:flex-none px-3 py-1.5 text-sm font-medium rounded ${quinzena === 1 ? 'bg-white text-blue-700 shadow-sm transition' : 'text-gray-600 hover:text-gray-900 transition'}`}
             >
               1ª Quinzena
             </button>
             <button
               onClick={() => setQuinzena(2)}
-              className={`px-3 py-1.5 text-sm font-medium rounded ${quinzena === 2 ? 'bg-white text-blue-700 shadow-sm transition' : 'text-gray-600 hover:text-gray-900 transition'}`}
+              className={`flex-1 sm:flex-none px-3 py-1.5 text-sm font-medium rounded ${quinzena === 2 ? 'bg-white text-blue-700 shadow-sm transition' : 'text-gray-600 hover:text-gray-900 transition'}`}
             >
               2ª Quinzena
             </button>

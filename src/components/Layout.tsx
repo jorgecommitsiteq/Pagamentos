@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Users, FileText, CalendarCheck, DollarSign, LogOut } from 'lucide-react';
+import { Users, FileText, CalendarCheck, DollarSign, LogOut, Menu, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -56,10 +57,21 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50 overflow-hidden">
+      {/* Mobile Header */}
+      <div className="md:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-blue-600">RH Benefits</h1>
+          <p className="text-xs text-gray-500">Gestão de VR/VT</p>
+        </div>
+        <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-md">
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-6 border-b border-gray-200">
+      <aside className={`${menuOpen ? 'flex absolute inset-0 top-[73px] z-50 shadow-xl' : 'hidden'} md:flex md:static w-full md:w-64 bg-white border-r border-gray-200 flex-col transition-all`}>
+        <div className="hidden md:block p-6 border-b border-gray-200">
           <h1 className="text-xl font-bold tracking-tight text-blue-600">RH Benefits</h1>
           <p className="text-xs text-gray-500 mt-1">Gestão de VR/VT</p>
         </div>
@@ -72,6 +84,7 @@ export default function Layout() {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={() => setMenuOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                   isActive 
                     ? 'bg-blue-50 text-blue-700' 

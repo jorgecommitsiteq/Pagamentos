@@ -16,6 +16,7 @@ export interface Termo {
   descricao: string;
   acao_vr: AcaoBeneficio;
   acao_vt: AcaoBeneficio;
+  cor?: string;
 }
 
 export interface Frequencia {

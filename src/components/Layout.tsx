@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Users, FileText, CalendarCheck, DollarSign, LogOut, Menu, X } from 'lucide-react';
+import { Users, FileText, CalendarCheck, DollarSign, LogOut, Menu, X, History } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export default function Layout() {
@@ -46,6 +46,7 @@ export default function Layout() {
     { name: 'Motor de Regras', path: '/app/terms', icon: FileText },
     { name: 'Frequência', path: '/app/attendance', icon: CalendarCheck },
     { name: 'Fechamento Financeiro', path: '/app/financial', icon: DollarSign },
+    { name: 'Auditoria e Logs', path: '/app/audit', icon: History },
   ];
 
   if (loading) {

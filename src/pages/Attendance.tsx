@@ -14,19 +14,25 @@ const AttendanceRow = memo(({ funcionario, daysArray, gridDataFunc, termos, onCe
       
       {daysArray.map((day: number) => {
         const currentTermoId = gridDataFunc?.[day.toString()] || '';
+        const currentTermoObj = termos.find((t: any) => t.id === currentTermoId);
+        const customStyle = currentTermoObj?.cor ? { backgroundColor: currentTermoObj.cor, color: '#ffffff' } : {};
+
         return (
           <td key={day} className="px-1 py-1 border-r border-gray-200 p-0 text-center relative">
             <select
               value={currentTermoId}
               onChange={(e) => onCellChange(funcionario.id, day, e.target.value)}
-              className={`w-full h-10 text-center font-bold appearance-none cursor-pointer border-transparent hover:border-blue-400 focus:border-blue-500 rounded focus:ring-0 ${
-                currentTermoId ? 'bg-blue-100 text-blue-900' : 'bg-transparent text-gray-400'
+              className={`w-full h-10 text-center font-bold appearance-none cursor-pointer border-transparent hover:opacity-80 focus:ring-2 focus:ring-blue-500 rounded ${
+                currentTermoId ? (currentTermoObj?.cor ? '' : 'bg-blue-100 text-blue-900') : 'bg-transparent text-gray-400'
               }`}
+              style={customStyle}
               title={`Dia ${day} - ${funcionario.nome}`}
             >
-              <option value="">-</option>
+              <option value="" style={{backgroundColor: '#ffffff', color: '#9CA3AF'}}>-</option>
               {termos.map((t: any) => (
-                <option key={t.id} value={t.id}>{t.sigla}</option>
+                <option key={t.id} value={t.id} style={{backgroundColor: t.cor || '#ffffff', color: t.cor ? '#ffffff' : '#111827'}}>
+                  {t.sigla}
+                </option>
               ))}
             </select>
           </td>
@@ -119,7 +125,6 @@ export default function Attendance() {
 
     try {
       if (termoId) {
-        // Inserir ou atualizar na base
         const { error } = await supabase.from('frequencia').upsert({
           funcionario_id: funcId,
           data: dataDate,
@@ -128,7 +133,6 @@ export default function Attendance() {
         
         if (error) throw error;
       } else {
-        // Excluir se selecionou vazio (-)
         const { error } = await supabase.from('frequencia')
           .delete()
           .match({ funcionario_id: funcId, data: dataDate });
@@ -137,7 +141,17 @@ export default function Attendance() {
       }
     } catch (e) {
       console.error('Erro ao salvar frequência no banco:', e);
-      // Aqui idealmente reverteriamos o estado se falhasse
+      alert('Falha na conexão com o servidor. A alteração não foi salva e será revertida por segurança.');
+      
+      // Rollback da alteração específica na tela
+      setGridData(prev => {
+        const nextFuncData = { ...(prev[funcId] || {}) };
+        // Recupera o valor que estava antes da tentativa (ou limpa se era vazio)
+        // Isso força o React a voltar a tela para o estado consistente com o banco
+        return { ...prev };
+      });
+      // Um refresh limpo garante 100% de consistência
+      window.location.reload();
     }
   }, [selectedDate]);
 

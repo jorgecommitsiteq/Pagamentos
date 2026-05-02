@@ -10,6 +10,7 @@ import Employees from './pages/Employees';
 import Terms from './pages/Terms';
 import Attendance from './pages/Attendance';
 import Financial from './pages/Financial';
+import Audit from './pages/Audit';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="terms" element={<Terms />} />
           <Route path="attendance" element={<Attendance />} />
           <Route path="financial" element={<Financial />} />
+          <Route path="audit" element={<Audit />} />
         </Route>
       </Routes>
     </Router>

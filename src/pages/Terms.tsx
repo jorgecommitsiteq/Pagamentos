@@ -12,6 +12,7 @@ export default function Terms() {
   const [descricao, setDescricao] = useState('');
   const [acaoVr, setAcaoVr] = useState<AcaoBeneficio>('PAGA');
   const [acaoVt, setAcaoVt] = useState<AcaoBeneficio>('PAGA');
+  const [cor, setCor] = useState<string>('#3B82F6');
   const [editId, setEditId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -30,7 +31,8 @@ export default function Terms() {
       sigla: sigla.toUpperCase(),
       descricao,
       acao_vr: acaoVr,
-      acao_vt: acaoVt
+      acao_vt: acaoVt,
+      cor
     };
     
     if (editId) {
@@ -63,7 +65,7 @@ export default function Terms() {
   const closeForm = () => {
     setIsFormOpen(false);
     setEditId(null);
-    setSigla(''); setDescricao(''); setAcaoVr('PAGA'); setAcaoVt('PAGA');
+    setSigla(''); setDescricao(''); setAcaoVr('PAGA'); setAcaoVt('PAGA'); setCor('#3B82F6');
   };
 
   const openEdit = (t: Termo) => {
@@ -72,6 +74,7 @@ export default function Terms() {
     setDescricao(t.descricao);
     setAcaoVr(t.acao_vr);
     setAcaoVt(t.acao_vt);
+    setCor(t.cor || '#3B82F6');
     setIsFormOpen(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -129,6 +132,14 @@ export default function Terms() {
             <input required type="text" value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Ex: Falta Injustificada" className="w-full border p-2 rounded-md focus:ring-1 focus:ring-blue-500" />
           </div>
 
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cor de Identificação (Frequência)</label>
+            <div className="flex items-center gap-3">
+              <input type="color" value={cor} onChange={e => setCor(e.target.value)} className="w-12 h-10 p-0.5 border rounded cursor-pointer" />
+              <span className="text-sm text-gray-500">A cor que aparecerá na tabela de Frequência para facilitar a visualização.</span>
+            </div>
+          </div>
+
           <div className="p-4 bg-gray-50 rounded-md border border-gray-200">
             <label className="block text-sm font-medium text-gray-900 mb-3 flex items-center justify-between">
               Regra de Vale Refeição (VR)
@@ -169,7 +180,10 @@ export default function Terms() {
           <div key={t.id} className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition">
             <div className="flex justify-between items-start mb-4">
               <div className="flex gap-2 items-center">
-                <div className="bg-gray-900 text-white font-bold text-lg px-3 py-1 rounded">
+                <div 
+                  className="text-white font-bold text-lg px-3 py-1 rounded border border-black/10"
+                  style={{ backgroundColor: t.cor || '#111827', color: '#ffffff' }}
+                >
                   {t.sigla}
                 </div>
                 <button onClick={() => openEdit(t)} className="text-gray-400 hover:text-blue-600 p-1 transition" title="Editar Regra">
